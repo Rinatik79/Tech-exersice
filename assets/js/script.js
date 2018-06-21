@@ -370,23 +370,32 @@ $(function () {
 
 var cartState = 0;
 var cartPreviousState = 0;
+var cartObj;
 var cartIcon = document.getElementById('little-cart');
 
 $(document).ready(function() { 
 	
 	var myCart = getCartStorage ("cart");
-	//console.log(cart);
-	//alert(typeof(cart));
-	if (myCart.length === 0) { //cart existing verifycation
-		setCartStorage("cart", "1", 365); // new cart creation
-		alert(getCartStorage ("cart"));
+	//console.log(myCart);
+	alert(myCart.length);
+	if (myCart.length == 0) { //cart existing verifycation
+		var emptyCart = {
+			"totalPhoneNumber" : 0,
+			"selectedPhones" : [
+				{"id": 0,
+				"name": " ",
+				"price": 0,}
+			]			
+		};
+		cartObj = JSON.stringify(emptyCart);
+		setCartStorage("cart", cartObj, 365); // new cart creation
+		//alert(typeof(getCartStorage ("cart")) + getCartStorage ("cart"));
 		
 	}
 	else{
-		//alert(myCart.length);
-		var cartObj = JSON.parse(myCart);
-		console.log(myCart);
-		cartState = parseInt(cartObj);		
+		alert("myCart length = " + myCart.length);
+		cartObj = JSON.parse(myCart);
+		cartState = cartObj.totalPhoneNumber;		
 	}
 	//alert(cartState);
 	setInterval(function() {
@@ -395,9 +404,9 @@ $(document).ready(function() {
 			$("#little-cart-phone-qte").html(cartState);
 			cartPreviousState = cartState;
 		}
-		if (cartState > 0) {
+		if (cartState != 0) {
 			cartIcon.style.display='inline-block';
-			alert(cartState);
+			//alert("all works?" + cartState);
 		}
 		else {
 			cartIcon.style.display='none';
@@ -449,12 +458,17 @@ function getCartStorage (cname) { //get information from cart cookie
 
 function addOnePhone (id) {
 	cartState++;
-		var currentBrend = {"allPhonesQte": cartState };
-		setCartStorage("cart", currentBrend, 365);
+	var myCart = getCartStorage ("cart");
+	cartObj = JSON.parse(myCart);
+	cartObj.totalPhoneNumber = cartState;
+	$("#phone-qty").html(cartState);
+	cartObj = JSON.stringify(cartObj);
+	
+	setCartStorage("cart", cartObj, 365);
 	//var allPhonesQty = parseInt(getCartStorage("cart"));
 	//allPhonesQty++;
 	//alert(allPhonesQty);
 	//allPhonesQty = (allPhonesQty).toString();
 	//setCartStorage("cart", allPhonesQty, 365);
-	//$("#phone-qty").html(allPhonesQty);	
+	//	
 }
