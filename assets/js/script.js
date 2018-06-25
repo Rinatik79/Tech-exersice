@@ -371,6 +371,7 @@ $(function () {
 var cartState = 0;
 var cartPreviousState = 0;
 var cartObj;
+var previousCartObj;
 var cartIcon = document.getElementById('little-cart');
 
 $(document).ready(function() { 
@@ -382,9 +383,47 @@ $(document).ready(function() {
 		var emptyCart = {
 			"totalPhoneNumber" : 0,
 			"selectedPhones" : [
-				{"id": 0,
+				{"id": 1,
 				"name": " ",
-				"price": 0,}
+				"price": 0,
+				"image": "assets/images/sony-xperia-z3.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 2,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/iphone6.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 3,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/htc-one.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 4,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/galaxy-alpha.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 5,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/nokia-lumia.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 6,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/zte-nubia.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 7,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/galaxy-s5.jpg",
+				"thisPhoneQty" : 0},
+				{"id": 8,
+				"name": " ",
+				"price": 0,
+				"image": "assets/images/iphone5s.jpg",
+				"thisPhoneQty" : 0}
+
 			]			
 		};
 		cartObj = JSON.stringify(emptyCart);
@@ -411,10 +450,13 @@ $(document).ready(function() {
 		else {
 			cartIcon.style.display='none';
 		}
-	}, 10000);	
+	}, 114);	
 });
 
 function myFunction (id) {
+	var myCart = getCartStorage ("cart");
+	cartObj = JSON.parse(myCart);
+	$("#phone-qty").html(cartObj.selectedPhones[id-1].thisPhoneQty);
 
 	setTimeout(function() { 
 		document.getElementById("clse").click(); 
@@ -425,11 +467,24 @@ function myFunction (id) {
 	popupWin.style.display='block'; // opens 'add to cart' popup window
 
 	document.getElementById('close-popup').onclick = function() {
+		alert(myCart);
+		setCartStorage("cart", myCart, 365);
+		cartObj = JSON.parse(myCart);
+		cartState = cartObj.totalPhoneNumber;
+		popupWin.style.display='none'; //closes 'add to cart' popup window add-one-phone
+	}
+
+	document.getElementById('add-to-cart').onclick = function() {
+		//setCartStorage("cart", myCart, 365);
 		popupWin.style.display='none'; //closes 'add to cart' popup window add-one-phone
 	}
 
 	document.getElementById('add-one-phone').onclick = function() {
 		addOnePhone (id);
+	}
+
+	document.getElementById('remove-one-phone').onclick = function() {
+		removeOnePhone (id);
 	}
 
 }
@@ -457,18 +512,39 @@ function getCartStorage (cname) { //get information from cart cookie
 }
 
 function addOnePhone (id) {
-	cartState++;
-	var myCart = getCartStorage ("cart");
-	cartObj = JSON.parse(myCart);
-	cartObj.totalPhoneNumber = cartState;
-	$("#phone-qty").html(cartState);
-	cartObj = JSON.stringify(cartObj);
-	
-	setCartStorage("cart", cartObj, 365);
-	//var allPhonesQty = parseInt(getCartStorage("cart"));
-	//allPhonesQty++;
-	//alert(allPhonesQty);
-	//allPhonesQty = (allPhonesQty).toString();
-	//setCartStorage("cart", allPhonesQty, 365);
-	//	
+	//alert(id);
+	var JSONquery = $.getJSON("../../products.json", function( products ) {
+			cartState++;
+			var myCart = getCartStorage ("cart");
+			cartObj = JSON.parse(myCart);
+			cartObj.totalPhoneNumber = cartState;
+			cartObj.selectedPhones[id-1].thisPhoneQty++;
+			cartObj.selectedPhones[id-1].name = products[id-1].name;
+			cartObj.selectedPhones[id-1].price = products[id-1].price;
+			$("#phone-qty").html(cartObj.selectedPhones[id-1].thisPhoneQty);
+			cartObj = JSON.stringify(cartObj);
+			setCartStorage("cart", cartObj, 365);
+
+			//alert(products[id-1].name);		
+	});
+}
+
+function removeOnePhone (id) {
+	//alert(id);
+	var JSONquery = $.getJSON("../../products.json", function( products ) {
+			var myCart = getCartStorage ("cart");
+			cartObj = JSON.parse(myCart);
+			if (cartObj.selectedPhones[id-1].thisPhoneQty >= 1) {
+				cartState--;
+				cartObj.totalPhoneNumber = cartState;
+				cartObj.selectedPhones[id-1].thisPhoneQty--;
+				cartObj.selectedPhones[id-1].name = products[id-1].name;
+				cartObj.selectedPhones[id-1].price = products[id-1].price;
+				$("#phone-qty").html(cartObj.selectedPhones[id-1].thisPhoneQty);
+			}
+			cartObj = JSON.stringify(cartObj);
+			setCartStorage("cart", cartObj, 365);
+
+			//alert(products[id-1].name);		
+	});
 }
