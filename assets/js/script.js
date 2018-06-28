@@ -368,6 +368,8 @@ $(function () {
 
 });
 
+//Above is your code, I've not touch it
+
 var cartState = 0;
 var cartPreviousState = 0;
 var cartObj;
@@ -378,7 +380,7 @@ $(document).ready(function() {
 	
 	var myCart = getCartStorage ("cart");
 	//console.log(myCart);
-	alert(myCart.length);
+	//alert(myCart.length);
 	if (myCart.length == 0) { //cart existing verifycation
 		var emptyCart = {
 			"totalPhoneNumber" : 0,
@@ -432,7 +434,7 @@ $(document).ready(function() {
 		
 	}
 	else{
-		alert("myCart length = " + myCart.length);
+		//alert("myCart length = " + myCart.length);
 		cartObj = JSON.parse(myCart);
 		cartState = cartObj.totalPhoneNumber;		
 	}
@@ -450,7 +452,59 @@ $(document).ready(function() {
 		else {
 			cartIcon.style.display='none';
 		}
-	}, 114);	
+	}, 114);
+	document.getElementById("little-cart").onclick = function(){
+
+		var popupMask=document.getElementById('popup-mask-for-cart');
+		popupMask.style.display='block';
+	 // opens 'add to cart' popup window
+		//document.getElementById('close-popup').click();
+		var popupWinAddtoCart=document.getElementById('add-to-check-out');
+		popupWinAddtoCart.style.display='block'; // opens 'check-out' popup window
+		var myCart = getCartStorage ("cart");
+		cartObj = JSON.parse(myCart);
+		alert(cartObj.totalPhoneNumber);
+		var divToShow = "";
+		//alert ("cartObj.selectedPhones.length = " + cartObj.selectedPhones.length);
+		console.log(cartObj);
+
+		document.getElementById('popup-mask-for-cart').onclick = function() {
+			//setCartStorage("cart", myCart, 365);
+			popupMask.style.display='none'; //closes 'add to cart' popup window add-one-phone
+			popupWinAddtoCart.style.display='none';
+		}
+		
+		for (var i=0; i < cartObj.selectedPhones.length; i++){
+			if (cartObj.selectedPhones[i].thisPhoneQty > 0) {
+				divToShow = divToShow + "<img src = '" + cartObj.selectedPhones[i].image + "'>";
+				divToShow = divToShow + "<p class = 'phone-name'>" + cartObj.selectedPhones[i].name + "</p>";
+				divToShow = divToShow + "<p class = 'phone-qty'>" + cartObj.selectedPhones[i].thisPhoneQty + "</p><br>";
+				//alert ("divToShow = " + divToShow);
+			}
+		}
+
+		$("#show-all-phones").html(divToShow);
+
+		document.getElementById("clear-cart").onclick = function () {
+			setCartStorage("cart", "", 365);
+			cartState = 0;
+			cartPreviousState = 0;
+			cartObj=null;
+			previousCartObj=null;
+			location.reload(); 
+		}
+
+		document.getElementById("check-out").onclick = function () {
+			alert("Here must be check-out!!!")
+			setCartStorage("cart", "", 365);
+			cartState = 0;
+			cartPreviousState = 0;
+			cartObj=null;
+			previousCartObj=null;
+			location.reload(); 
+		}
+
+	}
 });
 
 function myFunction (id) {
@@ -466,17 +520,32 @@ function myFunction (id) {
 	var popupWin=document.getElementById('popup');
 	popupWin.style.display='block'; // opens 'add to cart' popup window
 
+	var popupMask=document.getElementById('popup-mask');
+	popupMask.style.display='block';
+	 // opens 'add to cart' popup window
+
+	document.getElementById('popup-mask').onclick = function() {
+		var popupWinAddtoCart=document.getElementById('add-to-check-out');
+		popupWinAddtoCart.style.display='none';
+		popupMask.style.display='none';
+		alert ("cartState = "+ cartState);
+		//cartObj.totalPhoneNumber = cartState;
+		document.getElementById('close-popup').click();
+	}
+
 	document.getElementById('close-popup').onclick = function() {
-		alert(myCart);
+		//alert(myCart);
 		setCartStorage("cart", myCart, 365);
 		cartObj = JSON.parse(myCart);
 		cartState = cartObj.totalPhoneNumber;
 		popupWin.style.display='none'; //closes 'add to cart' popup window add-one-phone
+		popupMask.style.display='none';
 	}
 
 	document.getElementById('add-to-cart').onclick = function() {
 		//setCartStorage("cart", myCart, 365);
 		popupWin.style.display='none'; //closes 'add to cart' popup window add-one-phone
+		popupMask.style.display='none';
 	}
 
 	document.getElementById('add-one-phone').onclick = function() {

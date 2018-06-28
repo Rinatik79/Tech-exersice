@@ -432,11 +432,38 @@ header h2.tempo a{
 }
 
 .popup {
+	border-radius: 3px;
 	z-index: 2000;
 	display: none;
 	height: 400px;
 	width: 400px;
-	background-color: #4BC34B;
+	background-color: #5895DB;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.popup-mask {
+	z-index: 1000;
+	display: none;
+	height: 100%;
+	width: 100%;
+	background-color: #211b1b;
+	opacity: .7;
+	transition: 0.54s;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.add-to-check-out {
+	z-index: 2000;
+	display: none;
+	height: 400px;
+	width: 400px;
+	background-color: #5895DB;;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -453,6 +480,19 @@ header h2.tempo a{
 	border-radius: 3px;
 	background-size: cover;
 	background-image: url(../images/cart.jpg);
+	transition: 0.4s;
+}
+
+.little-cart:hover {
+	margin-right: 17px;
+	height: 44px;
+	width: 44px;
+	box-shadow: 0 0px 7px rgba(255, 255, 255, 0.54);
+}
+
+.little-cart:hover > .little-cart-phone-qte {
+	margin-top: 13px;
+	margin-left: 4px;
 }
 
 .little-cart-phone-qte {
@@ -463,4 +503,10 @@ header h2.tempo a{
 	margin-left: 2px;
 	text-align: center;
 	color: white;
+	transition: 0.4s;
+}
+
+.time {
+	transition: 0.54s;
+	opacity: 0;
 }
