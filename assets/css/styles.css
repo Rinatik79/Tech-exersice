@@ -435,14 +435,15 @@ header h2.tempo a{
 	border-radius: 3px;
 	z-index: 2000;
 	display: none;
-	height: 400px;
+	height: 200px;
 	width: 400px;
-	background-color: #5895DB;
-	position: absolute;
+	background-color: white;
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	text-align: center;
+	box-shadow : 0 0 20px 8px rgba(0, 0, 0, 0.33);
 }
 
 .popup-mask {
@@ -463,12 +464,16 @@ header h2.tempo a{
 	display: none;
 	height: 400px;
 	width: 400px;
-	background-color: #5895DB;;
-	position: absolute;
+	background-color: white;
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	text-align: center;
+	box-shadow : 0 0 20px 8px rgba(0, 0, 0, 0.33);
+	overflow: auto;
+	transition: 0.54s;
+	opacity: 1;
 }
 
 .little-cart {
@@ -506,7 +511,21 @@ header h2.tempo a{
 	transition: 0.4s;
 }
 
+.cart-table {
+	margin: 19px;
+	border: none;
+}
+
 .time {
 	transition: 0.54s;
 	opacity: 0;
+}
+
+.ltl-btn {
+	border-radius: 2px;
+	background-color:  #87bae1;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+	border: 0;
+	margin: 10px;
+	padding: 10px;
 }
