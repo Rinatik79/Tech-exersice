@@ -77,6 +77,8 @@ $(function () {
 
 	// Single product page buttons
 
+
+
 	var singleProductPage = $('.single-product');
 
 	singleProductPage.on('click', function (e) {
@@ -201,12 +203,17 @@ $(function () {
 		// Each products has a data-index attribute.
 		// On click change the url hash to open up a preview for this product only.
 		// Remember: every hashchange triggers the render function.
+
 		list.find('li').on('click', function (e) {
 			e.preventDefault();
 
 			var productIndex = $(this).data('index');
 
 			window.location.hash = 'product/' + productIndex;
+		});
+
+		list.find('button').on('click', function (e) {
+			e.stopPropagation(); //stops style inhereting for button			
 		})
 	}
 
@@ -433,7 +440,7 @@ $(document).ready(function() {
 		cartObj = JSON.parse(myCart);		  //the cart exist allready, we set our "state"
 		cartState = cartObj.totalPhoneNumber;		
 	}
-	//alert(cartState);
+
 	setInterval(function() {				  //this is an analog of React's "render", checks the "state" changes
 		if (cartState != cartPreviousState) {
 			
@@ -442,12 +449,12 @@ $(document).ready(function() {
 		}
 		if (cartState != 0) {
 			cartIcon.style.display='inline-block';
-			//alert("all works?" + cartState);
 		}
 		else {
 			cartIcon.style.display='none';
 		}
 	}, 114);
+
 	document.getElementById("little-cart").onclick = function(){ //opens cart popup 
 
 		var popupMask=document.getElementById('popup-mask-for-cart');
@@ -456,10 +463,7 @@ $(document).ready(function() {
 		popupWinAddtoCart.style.display='block'; // opens 'check-out' popup window
 		var myCart = getCartStorage ("cart");
 		cartObj = JSON.parse(myCart);
-		alert(cartObj.totalPhoneNumber);
 		var divToShow = "<table>";
-		//alert ("cartObj.selectedPhones.length = " + cartObj.selectedPhones.length);
-		console.log(cartObj);
 
 		document.getElementById('popup-mask-for-cart').onclick = function() {
 			popupMask.style.display='none'; //closes 'add to cart' popup window add-one-phone
@@ -501,33 +505,27 @@ $(document).ready(function() {
 });
 
 function myFunction (id) {
+	//alert("My function's id "+id);
+	
 	var myCart = getCartStorage ("cart");
 	cartObj = JSON.parse(myCart);
+	//alert(cartObj.selectedPhones[id-1].thisPhoneQty);
 	$("#phone-qty").html(cartObj.selectedPhones[id-1].thisPhoneQty);
-	//$("#phone-name").html(cartObj.selectedPhones[id-1].name);
-	setTimeout(function() { 
-		document.getElementById("clse").click(); // it closes Single Product Page popup
-	}, 33);
 
 	var popupWin=document.getElementById('popup');
-	$("#phone-name").html(cartObj.selectedPhones[id-1].name);
-	popupWin.style.display='block'; 	// opens 'add to cart' popup window
-
+	popupWin.style.display="block"; 
+	
 	var popupMask=document.getElementById('popup-mask');
 	popupMask.style.display='block'; 	// opens mask for 'add to cart' popup window
-	 
-
+	
 	document.getElementById('popup-mask').onclick = function() { // reset changes if mask is clicked
 		var popupWinAddtoCart=document.getElementById('add-to-check-out');
 		popupWinAddtoCart.style.display='none';
 		popupMask.style.display='none';
-		alert ("cartState = "+ cartState);
-		//cartObj.totalPhoneNumber = cartState;
 		document.getElementById('close-popup').click();
 	}
 
 	document.getElementById('close-popup').onclick = function() { // reset changes if cancel is clicked
-		//alert(myCart);
 		setCartStorage("cart", myCart, 365);
 		cartObj = JSON.parse(myCart);
 		cartState = cartObj.totalPhoneNumber;
@@ -574,7 +572,6 @@ function getCartStorage (cname) { //get information from cart cookie
 }
 
 function addOnePhone (id) { // adds one phone to cart by id with "state" change 
-	//alert(id);
 	var JSONquery = $.getJSON("../../products.json", function( products ) {
 			cartState++;
 			var myCart = getCartStorage ("cart");
@@ -586,13 +583,10 @@ function addOnePhone (id) { // adds one phone to cart by id with "state" change
 			$("#phone-qty").html(cartObj.selectedPhones[id-1].thisPhoneQty);
 			cartObj = JSON.stringify(cartObj);
 			setCartStorage("cart", cartObj, 365);
-
-			//alert(products[id-1].name);		
 	});
 }
 
 function removeOnePhone (id) { // removes one phone from cart by id with "state" change 
-	//alert(id);
 	var JSONquery = $.getJSON("../../products.json", function( products ) {
 			var myCart = getCartStorage ("cart");
 			cartObj = JSON.parse(myCart);
@@ -606,7 +600,5 @@ function removeOnePhone (id) { // removes one phone from cart by id with "state"
 			}
 			cartObj = JSON.stringify(cartObj);
 			setCartStorage("cart", cartObj, 365);
-
-			//alert(products[id-1].name);		
 	});
 }

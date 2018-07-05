@@ -318,6 +318,15 @@ header h2.tempo a{
 	height: 32px;
 }
 
+.products-list button:hover{
+	position: absolute;
+	z-index: 2000;
+	border-radius: 2px;
+	background-color:  #3b93b3;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.19);
+}
+
+
 
 /* Making the list responsive */
 
@@ -435,7 +444,7 @@ header h2.tempo a{
 	border-radius: 3px;
 	z-index: 2000;
 	display: none;
-	height: 200px;
+	height: 114px;
 	width: 400px;
 	background-color: white;
 	position: fixed;
@@ -518,7 +527,6 @@ header h2.tempo a{
 
 .time {
 	transition: 0.54s;
-	opacity: 0;
 }
 
 .ltl-btn {

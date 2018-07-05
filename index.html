@@ -81,8 +81,8 @@
 								<li><span>OS: </span>{{specs.os}}</li>
 								<li><span>Camera: </span>{{specs.camera}} Mpx</li>
 							</ul>
-							<button onclick="myFunction({{id}})">Buy Now!</button>
-							<p class="product-price">{{price}}$</p>
+							<button id="{{id}}" class="b-btn" style="z-index: 1000;" onclick="myFunction({{id}})">Buy Now!</button>
+							<p class="product-price">{{price}}</p>
 							<div class="highlight"></div>
 						</li>
 					{{/each}}
@@ -90,7 +90,6 @@
 			</ul>
 
 		</div>
-
 
 		<div class="single-product page">
 
@@ -115,9 +114,7 @@
 		<div class="popup-mask" id="popup-mask"></div>
 		<div class="popup-mask" id="popup-mask-for-cart"></div>
 		<div class="popup" id="popup">
-					
-			
-			<h3 id="phone-name"></h3>
+								
 			<div>
 				<button class="ltl-btn" id="add-one-phone" style="display: inline;"> + </button>
 				<p id="phone-qty" style="display: inline;"></p>
